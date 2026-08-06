@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heredity and Evolution - Swadhyay</title>
+    <style>
+        :root {
+            --primary-color: #0052D4;
+            --secondary-color: #38B6FF;
+            --bg-color: #FFFFFF;
+            --text-color: #1D2335;
+            --muted-bg: #F0F4F8;
+            --white-text: #FFFFFF;
+            --correct-bg: #E6F7EE;
+            --correct-border: #2BB673;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Nirmala UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--muted-bg); color: var(--text-color); min-height: 100vh; }
+
+        .app-header {
+            background-color: var(--primary-color);
+            padding: 30px 24px;
+            color: var(--white-text);
+            position: relative;
+            border-bottom-left-radius: 32px;
+            border-bottom-right-radius: 32px;
+        }
+        .header-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .back-btn {
+            background-color: rgba(255,255,255,0.2); color: var(--white-text); border: none;
+            width: 42px; height: 42px; border-radius: 50%; font-size: 20px; font-weight: 700;
+            cursor: pointer; line-height: 42px;
+        }
+        .header-label { font-weight: 700; font-size: 14px; letter-spacing: 0.5px; }
+        .header-content { margin-top: 8px; }
+        .app-title { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: var(--secondary-color); font-weight: 700; margin-bottom: 8px; }
+        .main-heading { font-size: 24px; font-weight: 700; line-height: 1.3; }
+
+        .content-body { padding: 28px 24px 48px 24px; max-width: 640px; margin: 0 auto; }
+
+        .subtitle-banner {
+            background-color: var(--bg-color); border-radius: 16px; padding: 14px 18px; margin-bottom: 18px;
+            box-shadow: 0 4px 12px rgba(29,35,53,0.04); font-size: 13px; color: #7E8B9B; font-weight: 600;
+        }
+
+        .filter-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+        .pill {
+            background-color: var(--muted-bg); color: var(--text-color); border: none;
+            padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .pill.active { background-color: var(--primary-color); color: var(--white-text); }
+        .pill:hover { background-color: var(--secondary-color); color: var(--white-text); }
+
+        .section-block { margin-bottom: 26px; }
+        .section-title-bar {
+            display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 700;
+            color: var(--primary-color); margin-bottom: 14px;
+        }
+        .section-dot { width: 10px; height: 10px; border-radius: 50%; background-color: var(--secondary-color); }
+
+        .qa-card {
+            background-color: var(--bg-color); border-radius: 16px; margin-bottom: 12px;
+            box-shadow: 0 4px 12px rgba(29,35,53,0.04); overflow: hidden; border: 1px solid rgba(240,244,248,0.9);
+        }
+        .qa-header {
+            width: 100%; display: flex; align-items: flex-start; gap: 12px; text-align: left;
+            background: none; border: none; padding: 16px 18px; cursor: pointer; font-family: inherit;
+        }
+        .qa-num {
+            flex: 0 0 auto; width: 28px; height: 28px; border-radius: 50%; background-color: var(--muted-bg);
+            color: var(--primary-color); font-weight: 700; font-size: 14px; line-height: 28px; text-align: center;
+        }
+        .qa-q { flex: 1; text-align: left; font-size: 15px; font-weight: 600; line-height: 1.5; color: var(--text-color); }
+        .qa-toggle { flex: 0 0 auto; font-size: 22px; font-weight: 700; color: var(--primary-color); line-height: 1; transition: transform 0.25s ease; }
+        .qa-card.open .qa-toggle { transform: rotate(45deg); }
+
+        .qa-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+        .qa-inner { padding: 0 18px 18px 18px; text-align: left; }
+        .options { list-style: none; margin: 6px 0 12px 0; }
+        .options .opt { padding: 8px 12px; border-radius: 10px; background-color: var(--muted-bg); margin-bottom: 6px; font-size: 14px; }
+        .options .opt.correct { background-color: var(--correct-bg); border: 1px solid var(--correct-border); font-weight: 600; }
+        .ans-label { font-size: 14px; font-weight: 700; color: var(--text-color); margin-bottom: 6px; }
+        .ans-label span { color: var(--correct-border); }
+        .explain { font-size: 14px; line-height: 1.7; color: #4A5568; }
+        .answer-text { font-size: 14px; line-height: 1.8; color: #2D3748; }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-nav">
+            <button class="back-btn" onclick="goBack()">←</button>
+            <span class="header-label">Chapter 1</span>
+        </div>
+        <div class="header-content">
+            <p class="app-title">Science & Technology 2</p>
+            <h1 class="main-heading">Heredity and Evolution</h1>
+        </div>
+    </header>
+
+    <main class="content-body">
+        <div class="subtitle-banner">Chapter 1 • Swadhyay (Questions & Answers)</div>
+
+        <div class="filter-bar"><button class="pill active" data-filter="all" onclick="filterQA('all', this)">All</button><button class="pill " data-filter="mcq" onclick="filterQA('mcq', this)">MCQ</button><button class="pill " data-filter="pair" onclick="filterQA('pair', this)">Wrong Pair</button><button class="pill " data-filter="note" onclick="filterQA('note', this)">Note</button><button class="pill " data-filter="reason" onclick="filterQA('reason', this)">Reason</button><button class="pill " data-filter="fill" onclick="filterQA('fill', this)">Fill</button><button class="pill " data-filter="long" onclick="filterQA('long', this)">Detailed</button></div>
+
+        <div id="sectionsContainer">
+        <div class="section-block" data-type="mcq">
+      <div class="section-title-bar"><span class="section-dot"></span>Multiple Choice Questions</div>
+      <div class="section-qs">
+      <div class="qa-card" data-type="mcq">
+        <button class="qa-header" onclick="toggleQA('q-mcq-0-0')" aria-expanded="false">
+          <span class="qa-num">1</span>
+          <span class="qa-q">Which component in the nucleus of cells carries hereditary traits?</span>
+          <span class="qa-toggle">+</span>
+        </button>
+        <div class="qa-body" id="q-mcq-0-0">
+          <div class="qa-inner">
+        <ul class="options"><li class="opt ">a) Ribosome</li><li class="opt correct">b) Chromosomes</li><li class="opt ">c) Lysosome</li><li class="opt ">d) Mitochondria</li></ul>
+        <div class="ans-label">✅ Answer: <span>b) Chromosomes</span></div>
+        <p class="explain">DNA in chromosomes contains genes that carry hereditary traits to the next generation.</p></div>
+        </div>
+      </div>
+      <div class="qa-card" data-type="mcq">
+        <button class="qa-header" onclick="toggleQA('q-mcq-0-1')" aria-expanded="false">
+          <span class="qa-num">2</span>
+          <span class="qa-q">What components make up the DNA molecule?</span>
+          <span class="qa-toggle">+</span>
+        </button>
+        <div class="qa-body" id="q-mcq-0-1">
+          <div class="qa-inner">
+        <ul class="options"><li class="opt ">a) Amino acids</li><li class="opt correct">b) Nucleotides</li><li class="opt ">c) Carbohydrates</li><li class="opt ">d) Lipids</li></ul>
+        <div class="ans-label">✅ Answer: <span>b) Nucleotides</span></div>
+        <p class="explain">DNA is made up of nucleotides; each nucleotide contains phosphate, sugar, and a nitrogenous base.</p></div>
+        </div>
+      </div>
+      <div class="qa-card" data-type="mcq">
+        <button class="qa-header" onclick="toggleQA('q-mcq-0-2')" aria-expanded="false">
+          <span class="qa-num">3</span>
+          <span class="qa-q">Who pioneered modern genetics?</span>
+          <span class="qa-toggle">+</span>
+        </button>
+        <div class="qa-body" id="q-mcq-0-2">
+          <div class="qa-inner">
+        <ul class="options"><li class="opt ">a) Charles Darwin</li><li class="opt correct">b) Gregor Mendel</li><li class="opt ">c) Lamarck</li><li class="opt ">d) Hugo de Vries</li></ul>
+        <div class="ans-label">✅ Answer: <span>b) Gregor Mendel</span></div>
+        <p class="explain">Gregor Mendel discovered the laws of heredity through research on pea plants; hence he is called the Father of Genetics.</p></div>
+        </div>
+      </div>
+      <div class="qa-card" data-type="mcq">
+        <button class="qa-header" onclick="toggleQA('q-mcq-0-3')" aria-expanded="false">
+          <span class="qa-num">4</span>
+          <span class="qa-q">Who published the book 'On the Origin of Species'?</span>
+          <span class="qa-toggle">+</span>
+        </button>
+        <div class="qa-body" id="q-mcq-0-3">
+          <div class="qa-inner">
+        <ul class="options"><li class="opt ">अ) लॅमार्क</li><li class="opt ">ब) मेंडेल</li><li class="opt correct">क) Charles Darwin</li><li class="opt ">d) Hugo de Vries</li></ul>
+        <div class="ans-label">✅ Answer: <span>क) Charles Darwin</span></div>
+        <p class="explain">Darwin published 'On the Origin of Species' in 1859, presenting the theory of natural selection.</p></div>
+        </div>
+      </div>
+      <div class="qa-card" data-type="mcq">
+        <button class="qa-header" onclick="toggleQA('q-mcq-0-4')" aria-expanded="false">
+          <span class="qa-num">5</span>
+          <span class="qa-q">Which carbon isotope is used for dating fossils?</span>
+          <span class="qa-toggle">+</span>
+        </button>
+        <div class="qa-body" id="q-mcq-0-4">
+          <div class="qa-inner">
+        <ul class="options"><li class="opt ">a) C-12</li><li class="opt correct">b) C-14</li><li class="opt ">c) C-16</li><li class="opt ">d) C-10</li></ul>
+        <div class="ans-label">✅ Answer: <span>b) C-14</span></div>
+        <p class="explain">Carbon dating is done by checking the ratio of C-14 to C-12 in dead organisms.</p></div>
+        </div>
+      </div>
+      <div class="qa-card" data-type="mcq">
+        <button class="qa-header" onclick="toggleQA('q-mcq-0-5')" aria-expanded="false">
+          <span class="qa-num">6</span>
+          <span class="qa-q">Which type represents the 'intelligent human' in human evolution?</span>
+          <span class="qa-toggle">+</span>
+        </button>
+        <div class="qa-body" id="q-mcq-0-5">
+          <div class="qa-inner">
+        <ul class="options"><li class="opt ">a) Homo erectus</li><li class="opt correct">b) Homo sapiens</li><li class="opt ">c) Homo habilis</li><li class="opt ">d) Ramapithecus</li></ul>
+        <div class="ans-label">✅ Answer: <span>b) Homo sapiens</span></div>
+        <p class="explain">Homo sapiens means wise human; about 50,000 years ago his brain was sufficiently developed.</p></div>
+        </div>
+      </div>
+      </div>
+    </div>
+    <div class="section-block" data-type="pair">
+      <div class="section-title-bar"><span class="section-dot"></span>Identify the Wrong Pair</div>
+      <div class="section-qs">
+      <div class="qa-card" data-type="pair">
+        <button class="qa-header" onclick="toggleQA('q-pair-1-0')" aria-expanded="false">
+          <span class="qa-num">1</span>
+          <span class="qa-q">Which is the wrong pair? (1) Gregor Mendel – Laws of Heredity (2) Darwin – Natural Selection (3) Lamarck – Mutation (4) Hugo de Vries – Mutation Theory</span>
+          <span class="qa-toggle">+</span>
+        </button>
+        <div class="qa-body" id="q-pair-1-0">
+          <div class="qa-inner">
+        <div class="ans-label">✅ Wrong Pair: <span>(3) Lamarck – Mutation</span></div>
+        <p class="explain">Lamarck proposed the theory of 'Use and Disuse of Organs'; the Mutation Theory belongs to Hugo de Vries.</p></div>
+        </div>
+      </div>
+      <div class="qa-card" data-type="pair">
+        <button class="qa-header" onclick="toggleQA('q-pair-1-1')" aria-expanded="false">
+          <span class="qa-num">2</span>
+          <span class="qa-q">Which is the wrong pair? (1) DNA – Nucleotides (2) RNA – Transcription (3) Ribosome – Protein Synthesis (4) Lysosome – Energy Production</span>
+          <span class="qa-toggle">+</span>
+        </button>
+        <div class="qa-body" id="q-pair-1-1">
+          <div class="qa-inner">
+        <div class="ans-label">✅ Wrong Pair: <span>(4) Lysosome – Energy Production</span></div>
+        <p class="explain">Energy production occurs in mitochondria; lysosomes contain digestive enzymes.</p></div>
+        </div>
+      </div>
+      </div>
+    </div>
+    <div class="section-block" data-type="note">
+      <div class="section-title-bar"><span class="section-dot"></span>Write a Note</div>
+      <div class="section-qs">
+      <div class="qa-card" data-type="note">
+        <button class="qa-header" onclick="toggleQA('q-note-2-0')" aria-expanded="false">
+          <span class="qa-num">1</span>
+          <span class="qa-q">Mutation</span>
+          <span class="qa-toggle">+</span>
+        </button>
+        <div class="qa-body" id="q-note-2-0">
+          <div class="qa-inner"><div class="ans-label">✅ Answer: <span>A sudden change in the position or sequence of a nucleotide in a gene is called mutation. It can occur naturally or due to radioactive or chemical factors.</span></div></div>
+        </div>
+      </div>
+      <div class="qa-card" data-type="note">
+        <button class="qa-header" onclick="toggleQA('q-note-2-1')" aria-expanded="false">
+          <span class="qa-num">2</span>
+          <span class="qa-q">Lamarckism</span>
+          <span class="qa-toggle">+</span>
+        </button>
+        <div class="qa-body" id="q-note-2-1">
+          <div class="qa-inner"><div class="ans-label">✅ Answer: <span>Theory proposed by Jean Baptiste Lamarck. According to it, changes in organisms occur due to effort or laziness, and these acquired traits are passed to the next generation. This theory was later proven wrong.</span></div></div>
+        </div>
+      </div>
+      <div class="qa-card" data-type="note">
+        <button class="qa-header" onclick="toggleQA('q-note-2-2')" aria-expanded="false">
+          <span class="qa-num">3</span>
+          <span class="qa-q">Darwin's Theory of Natural Selection</span>
+          <span class="qa-toggle">+</span>
+        </button>
+        <div class="qa-body" id="q-note-2-2">
+          <div class="qa-inner"><div class="ans-label">✅ Answer: <span>According to Darwin, all organisms reproduce in large numbers and there is fierce competition among them. The organism that shows necessary traits for survival survives (survival of the fittest). This natural selection causes evolution.</span></div></div>
+        </div>
+      </div>
+      <div class="qa-card" data-type="note">
+        <button class="qa-header" onclick="toggleQA('q-note-2-3')" aria-expanded="false">
+          <span class="qa-num">4</span>
+          <span class="qa-q">Vestigial Organs</span>
+          <span class="qa-toggle">+</span>
+        </button>
+        <div class="qa-body" id="q-note-2-3">
+          <div class="qa-inner"><div class="ans-label">✅ Answer: <span>Remaining or incompletely developed, non-functional organs or body parts in organisms are vestigial organs. E.g., human appendix, ear muscles, wisdom teeth, coccyx. These are evidence of evolution through vestigial organs.</span></div></div>
+        </div>
+      </div>
+      </div>
+    </div>
+    <div class="section-block" data-type="reason">
+      <div class="section-title-bar"><span class="section-dot"></span>Explain with Reason</div>
+      <div class="section-qs">
+      <div class="qa-card" data-type="reason">
+        <button class="qa-header" onclick="toggleQA('q-reason-3-0')" aria-expanded="false">
+          <span class="qa-num">1</span>
+          <span class="qa-q">Hereditary changes lead to evolution.</span>
+          <span class="qa-toggle">+</span>
+        </button>
+        <div class="qa-body" id="q-reason-3-0">
+          <div class="qa-inner"><div class="ans-label">✅ Explanation: <span>Genetic changes accumulate over generations. When geographical or reproductive isolation occurs, new species are formed over time; therefore hereditary changes are the foundation of evolution.</span></div></div>
+        </div>
+      </div>
+      <div class="qa-card" data-type="reason">
+        <button class="qa-header" onclick="toggleQA('q-reason-3-1')" aria-expanded="false">
+          <span class="qa-num">2</span>
+          <span class="qa-q">Fossils are important evidence of evolution.</span>
+          <span class="qa-toggle">+</span>
+        </button>
+        <div class="qa-body" id="q-reason-3-1">
+          <div class="qa-inner"><div class="ans-label">✅ Explanation: <span>Remains and impressions of organisms buried due to floods, earthquakes, volcanoes remain preserved underground. Studying them chronologically reveals the direction of evolution.</span></div></div>
+        </div>
+      </div>
+      <div class="qa-card" data-type="reason">
+        <button class="qa-header" onclick="toggleQA('q-reason-3-2')" aria-expanded="false">
+          <span class="qa-num">3</span>
+          <span class="qa-q">The human appendix is a vestigial organ.</span>
+          <span class="qa-toggle">+</span>
+        </button>
+        <div class="qa-body" id="q-reason-3-2">
+          <div class="qa-inner"><div class="ans-label">✅ Explanation: <span>The appendix is useful for grass-eating animals; in humans it performs no function but exists. This suggests that humans may have originated from herbivorous animals.</span></div></div>
+        </div>
+      </div>
+      </div>
+    </div>
+    <div class="section-block" data-type="fill">
+      <div class="section-title-bar"><span class="section-dot"></span>Fill in the Blanks</div>
+      <div class="section-qs">
+      <div class="qa-card" data-type="fill">
+        <button class="qa-header" onclick="toggleQA('q-fill-4-0')" aria-expanded="false">
+          <span class="qa-num">1</span>
+          <span class="qa-q">The process of transferring information from DNA to RNA is called ________.</span>
+          <span class="qa-toggle">+</span>
+        </button>
+        <div class="qa-body" id="q-fill-4-0">
+          <div class="qa-inner"><div class="ans-label">✅ Answer: <span>Transcription</span></div><p class="explain">The process of producing mRNA according to the gene sequence on DNA is called transcription.</p></div>
+        </div>
+      </div>
+      <div class="qa-card" data-type="fill">
+        <button class="qa-header" onclick="toggleQA('q-fill-4-1')" aria-expanded="false">
+          <span class="qa-num">2</span>
+          <span class="qa-q">The theory of sudden changes by ________ and Hugo de Vries.</span>
+          <span class="qa-toggle">+</span>
+        </button>
+        <div class="qa-body" id="q-fill-4-1">
+          <div class="qa-inner"><div class="ans-label">✅ Answer: <span>Mutation</span></div><p class="explain">Hugo de Vries called sudden changes mutations and said they cause evolution.</p></div>
+        </div>
+      </div>
+      <div class="qa-card" data-type="fill">
+        <button class="qa-header" onclick="toggleQA('q-fill-4-2')" aria-expanded="false">
+          <span class="qa-num">3</span>
+          <span class="qa-q">Peripatus is a connecting link between ________ and arthropods.</span>
+          <span class="qa-toggle">+</span>
+        </button>
+        <div class="qa-body" id="q-fill-4-2">
+          <div class="qa-inner"><div class="ans-label">✅ Answer: <span>Annelida (segmented worms)</span></div><p class="explain">Peripatus has segmented body parts and respiratory structure similar to arthropods; hence it is a connecting link between both.</p></div>
+        </div>
+      </div>
+      </div>
+    </div>
+    <div class="section-block" data-type="long">
+      <div class="section-title-bar"><span class="section-dot"></span>Detailed Answers</div>
+      <div class="section-qs">
+      <div class="qa-card" data-type="long">
+        <button class="qa-header" onclick="toggleQA('q-long-5-0')" aria-expanded="false">
+          <span class="qa-num">1</span>
+          <span class="qa-q">What is heredity? Explain how hereditary changes occur.</span>
+          <span class="qa-toggle">+</span>
+        </button>
+        <div class="qa-body" id="q-long-5-0">
+          <div class="qa-inner"><div class="ans-label">✅ Answer: <span>Heredity is the process of transmitting biological traits from one generation to the next through genes. Genes are located in chromosomes and reach the next generation through chromosomes. When there is a sudden change in the sequence of nucleotides in genes, mutation occurs; also during reproduction, mixing of genes creates new combinations. Such hereditary changes create variation over generations.</span></div></div>
+        </div>
+      </div>
+      <div class="qa-card" data-type="long">
+        <button class="qa-header" onclick="toggleQA('q-long-5-1')" aria-expanded="false">
+          <span class="qa-num">2</span>
+          <span class="qa-q">Explain the process of protein synthesis from DNA (Central Dogma).</span>
+          <span class="qa-toggle">+</span>
+        </button>
+        <div class="qa-body" id="q-long-5-1">
+          <div class="qa-inner"><div class="ans-label">✅ Answer: <span>mRNA is produced according to the gene sequence on DNA (Transcription). mRNA comes from the nucleus to the cytoplasm. There, on ribosomes, tRNA brings appropriate amino acids and a protein chain is formed (Translation). Each codon has a complementary anticodon. This entire process is called the Central Dogma.</span></div></div>
+        </div>
+      </div>
+      <div class="qa-card" data-type="long">
+        <button class="qa-header" onclick="toggleQA('q-long-5-2')" aria-expanded="false">
+          <span class="qa-num">3</span>
+          <span class="qa-q">What is the evidence of evolution? Explain in detail.</span>
+          <span class="qa-toggle">+</span>
+        </button>
+        <div class="qa-body" id="q-long-5-2">
+          <div class="qa-inner"><div class="ans-label">✅ Answer: <span>Main evidence of evolution: (1) Morphological – similar traits found in plants and animals. (2) Anatomical – bone structure of hands, legs, wings, fins is similar. (3) Vestigial organs – non-functional remnants. (4) Paleontological/Fossils – underground remains. (5) Connecting links – Peripatus, Duck-billed Platypus. (6) Embryological – embryos of vertebrates are similar.</span></div></div>
+        </div>
+      </div>
+      <div class="qa-card" data-type="long">
+        <button class="qa-header" onclick="toggleQA('q-long-5-3')" aria-expanded="false">
+          <span class="qa-num">4</span>
+          <span class="qa-q">Explain the journey of human evolution in detail.</span>
+          <span class="qa-toggle">+</span>
+        </button>
+        <div class="qa-body" id="q-long-5-3">
+          <div class="qa-inner"><div class="ans-label">✅ Answer: <span>The human lineage began about 70 million years ago. After dinosaurs disappeared, ape-like animals evolved from small mammals. About 25 million years ago, chimpanzees and gorillas diverged. About 20 million years ago, some ape species progressed in a different direction. As forests disappeared, apes came down, stood upright, and hand use increased. The sequence was Homo habilis, Homo erectus, Homo sapiens. About 50,000 years ago, the wise human (Homo sapiens) emerged.</span></div></div>
+        </div>
+      </div>
+      </div>
+    </div>
+    </div>
+    </main>
+
+    <script>
+        function goBack() {
+            if (window.history.length > 1) { window.history.back(); }
+            else { window.location.href = './sciencechapters_mr.html'; }
+        }
+        function toggleQA(id) {
+            var body = document.getElementById(id);
+            var card = body.parentElement;
+            if (body.style.maxHeight && body.style.maxHeight !== '0px') {
+                body.style.maxHeight = '0px';
+                card.classList.remove('open');
+            } else {
+                body.style.maxHeight = body.scrollHeight + 'px';
+                card.classList.add('open');
+            }
+        }
+        function filterQA(type, el) {
+            document.querySelectorAll('.pill').forEach(function(p){ p.classList.remove('active'); });
+            el.classList.add('active');
+            document.querySelectorAll('.section-block').forEach(function(sec){
+                if (type === 'all' || sec.getAttribute('data-type') === type) {
+                    sec.classList.remove('hidden');
+                } else {
+                    sec.classList.add('hidden');
+                }
+            });
+        }
+        window.onload = function(){
+            document.querySelectorAll('.qa-body').forEach(function(b){ b.style.maxHeight = '0px'; });
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lenses and their Applications - Self Study</title>
+    <style>
+        :root {
+    --primary-color: #0052D4;
+    --secondary-color: #38B6FF;
+    --bg-color: #FFFFFF;
+    --text-color: #1D2335;
+    --muted-bg: #F0F4F8;
+    --white-text: #FFFFFF;
+    --correct-bg: #E6F7EE;
+    --correct-border: #2BB673;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Nirmala UI', Tahoma, Geneva, Verdana, sans-serif; }
+body { background-color: var(--muted-bg); color: var(--text-color); min-height: 100vh; }
+
+.app-header {
+    background-color: var(--primary-color);
+    padding: 30px 24px;
+    color: var(--white-text);
+    position: relative;
+    border-bottom-left-radius: 32px;
+    border-bottom-right-radius: 32px;
+}
+.header-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+.back-btn {
+    background-color: rgba(255,255,255,0.2); color: var(--white-text); border: none;
+    width: 42px; height: 42px; border-radius: 50%; font-size: 20px; font-weight: 700;
+    cursor: pointer; line-height: 42px;
+}
+.header-label { font-weight: 700; font-size: 14px; letter-spacing: 0.5px; }
+.header-content { margin-top: 8px; }
+.app-title { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: var(--secondary-color); font-weight: 700; margin-bottom: 8px; }
+.main-heading { font-size: 24px; font-weight: 700; line-height: 1.3; }
+
+.content-body { padding: 28px 24px 48px 24px; max-width: 640px; margin: 0 auto; }
+
+.subtitle-banner {
+    background-color: var(--bg-color); border-radius: 16px; padding: 14px 18px; margin-bottom: 18px;
+    box-shadow: 0 4px 12px rgba(29,35,53,0.04); font-size: 13px; color: #7E8B9B; font-weight: 600;
+}
+
+.filter-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+.pill {
+    background-color: var(--muted-bg); color: var(--text-color); border: none;
+    padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: all 0.2s ease;
+}
+.pill.active { background-color: var(--primary-color); color: var(--white-text); }
+.pill:hover { background-color: var(--secondary-color); color: var(--white-text); }
+
+.section-block { margin-bottom: 26px; }
+.section-title-bar {
+    display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 700;
+    color: var(--primary-color); margin-bottom: 14px;
+}
+.section-dot { width: 10px; height: 10px; border-radius: 50%; background-color: var(--secondary-color); }
+
+.qa-card {
+    background-color: var(--bg-color); border-radius: 16px; margin-bottom: 12px;
+    box-shadow: 0 4px 12px rgba(29,35,53,0.04); overflow: hidden; border: 1px solid rgba(240,244,248,0.9);
+}
+.qa-header {
+    width: 100%; display: flex; align-items: flex-start; gap: 12px; text-align: left;
+    background: none; border: none; padding: 16px 18px; cursor: pointer; font-family: inherit;
+}
+.qa-num {
+    flex: 0 0 auto; width: 28px; height: 28px; border-radius: 50%; background-color: var(--muted-bg);
+    color: var(--primary-color); font-weight: 700; font-size: 14px; line-height: 28px; text-align: center;
+}
+.qa-q { flex: 1; text-align: left; font-size: 15px; font-weight: 600; line-height: 1.5; color: var(--text-color); }
+.qa-toggle { flex: 0 0 auto; font-size: 22px; font-weight: 700; color: var(--primary-color); line-height: 1; transition: transform 0.25s ease; }
+.qa-card.open .qa-toggle { transform: rotate(45deg); }
+
+.qa-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+.qa-inner { padding: 0 18px 18px 18px; text-align: left; }
+.options { list-style: none; margin: 6px 0 12px 0; }
+.options .opt { padding: 8px 12px; border-radius: 10px; background-color: var(--muted-bg); margin-bottom: 6px; font-size: 14px; }
+.options .opt.correct { background-color: var(--correct-bg); border: 1px solid var(--correct-border); font-weight: 600; }
+.ans-label { font-size: 14px; font-weight: 700; color: var(--text-color); margin-bottom: 6px; }
+.ans-label span { color: var(--correct-border); }
+.explain { font-size: 14px; line-height: 1.7; color: #4A5568; }
+.answer-text { font-size: 14px; line-height: 1.8; color: #2D3748; }
+
+.hidden { display: none !important; }
+        
+    </style>
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-nav">
+            <button class="back-btn" onclick="goBack()">←</button>
+            <span class="header-label">Chapter 7</span>
+        </div>
+        <div class="header-content">
+            <p class="app-title">Science & Technology 1</p>
+            <h1 class="main-heading">Lenses and their Applications</h1>
+        </div>
+    </header>
+
+    <main class="content-body">
+        <div class="subtitle-banner">Chapter 7 • Self Study (Questions & Answers)</div>
+
+        <div class="filter-bar"><button class="pill active" data-filter="all" onclick="filterQA('all', this)">All</button><button class="pill " data-filter="mcq" onclick="filterQA('mcq', this)">MCQ</button><button class="pill " data-filter="pair" onclick="filterQA('pair', this)">Wrong Pair</button><button class="pill " data-filter="note" onclick="filterQA('note', this)">Note</button><button class="pill " data-filter="reason" onclick="filterQA('reason', this)">Reason</button><button class="pill " data-filter="fill" onclick="filterQA('fill', this)">Fill Blanks</button><button class="pill " data-filter="long" onclick="filterQA('long', this)">Detailed</button></div>
+
+        <div id="sectionsContainer">
+            
+            <div class="section-block" data-type="mcq">
+                <div class="section-title-bar"><span class="section-dot"></span>Multiple Choice Questions</div>
+                <div class="section-qs">
+                <div class="qa-card" data-type="mcq">
+                    <button class="qa-header" onclick="toggleQA('q-mcq-7-0')" aria-expanded="false">
+                        <span class="qa-num">1</span>
+                        <span class="qa-q">What are the characteristics of a convex lens?</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-mcq-7-0">
+                        <div class="qa-inner">
+                    <ul class="options"><li class="opt ">a) Thinner in middle, always virtual image</li><li class="opt correct">b) Thicker in middle, real/virtual image</li><li class="opt ">c) Parallel lens</li><li class="opt ">d) Only virtual image</li></ul>
+                    <div class="ans-label">✅ Answer: <span>b) Thicker in middle, real/virtual image</span></div>
+                    <p class="explain">A convex (converging) lens is thicker in the middle and produces either a real or virtual image depending on the object's position.</p>
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="mcq">
+                    <button class="qa-header" onclick="toggleQA('q-mcq-7-1')" aria-expanded="false">
+                        <span class="qa-num">2</span>
+                        <span class="qa-q">What are the characteristics of a concave lens?</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-mcq-7-1">
+                        <div class="qa-inner">
+                    <ul class="options"><li class="opt ">a) Thicker in middle</li><li class="opt ">b) Always real image</li><li class="opt correct">c) Thinner in middle, always virtual and diminished image</li><li class="opt ">d) Converging</li></ul>
+                    <div class="ans-label">✅ Answer: <span>c) Thinner in middle, always virtual and diminished image</span></div>
+                    <p class="explain">A concave (diverging) lens is thinner in the middle and always produces a virtual, erect, and diminished image.</p>
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="mcq">
+                    <button class="qa-header" onclick="toggleQA('q-mcq-7-2')" aria-expanded="false">
+                        <span class="qa-num">3</span>
+                        <span class="qa-q">Which lens is used in the human eye and camera?</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-mcq-7-2">
+                        <div class="qa-inner">
+                    <ul class="options"><li class="opt ">a) Concave</li><li class="opt correct">b) Convex</li><li class="opt ">c) Parallel</li><li class="opt ">d) Prism</li></ul>
+                    <div class="ans-label">✅ Answer: <span>b) Convex</span></div>
+                    <p class="explain">A convex lens is used in the eye and camera; it forms a real image on the retina/film.</p>
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="mcq">
+                    <button class="qa-header" onclick="toggleQA('q-mcq-7-3')" aria-expanded="false">
+                        <span class="qa-num">4</span>
+                        <span class="qa-q">Which lens is used to treat cataracts?</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-mcq-7-3">
+                        <div class="qa-inner">
+                    <ul class="options"><li class="opt ">a) Concave</li><li class="opt correct">b) Convex</li><li class="opt ">c) Prism</li><li class="opt ">d) Bifocal</li></ul>
+                    <div class="ans-label">✅ Answer: <span>b) Convex</span></div>
+                    <p class="explain">In cataract surgery, the clouded natural lens is removed and a convex (converging) artificial lens is implanted.</p>
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="mcq">
+                    <button class="qa-header" onclick="toggleQA('q-mcq-7-4')" aria-expanded="false">
+                        <span class="qa-num">5</span>
+                        <span class="qa-q">Which lens is used to correct myopia (nearsightedness)?</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-mcq-7-4">
+                        <div class="qa-inner">
+                    <ul class="options"><li class="opt ">a) Convex</li><li class="opt correct">b) Concave</li><li class="opt ">c) Parallel</li><li class="opt ">d) Prism</li></ul>
+                    <div class="ans-label">✅ Answer: <span>b) Concave</span></div>
+                    <p class="explain">In myopia, distant objects are clear but nearby objects are not; a concave (diverging) lens is used.</p>
+                </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        
+            <div class="section-block" data-type="pair">
+                <div class="section-title-bar"><span class="section-dot"></span>Identify the Wrong Pair</div>
+                <div class="section-qs">
+                <div class="qa-card" data-type="pair">
+                    <button class="qa-header" onclick="toggleQA('q-pair-7-0')" aria-expanded="false">
+                        <span class="qa-num">1</span>
+                        <span class="qa-q">Which of the following is the wrong pair? (1) Convex – Thicker in middle (2) Concave – Thinner in middle (3) Cataract – Concave lens (4) Hypermetropia – Convex</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-pair-7-0">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Wrong Pair: <span>(3) Cataract – Concave lens</span></div>
+                    <p class="explain">A convex (converging) artificial lens is used for cataract, not a concave lens.</p>
+                </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        
+            <div class="section-block" data-type="note">
+                <div class="section-title-bar"><span class="section-dot"></span>Write a Note</div>
+                <div class="section-qs">
+                <div class="qa-card" data-type="note">
+                    <button class="qa-header" onclick="toggleQA('q-note-7-0')" aria-expanded="false">
+                        <span class="qa-num">1</span>
+                        <span class="qa-q">Convex lens</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-note-7-0">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer: <span>A lens that is thicker in the middle and thinner at the edges is called a convex (converging) lens. It converges incident rays to a single point (focus).</span></div>
+                    
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="note">
+                    <button class="qa-header" onclick="toggleQA('q-note-7-1')" aria-expanded="false">
+                        <span class="qa-num">2</span>
+                        <span class="qa-q">Concave lens</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-note-7-1">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer: <span>A lens that is thinner in the middle and thicker at the edges is called a concave (diverging) lens. It diverges rays and always gives a virtual image.</span></div>
+                    
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="note">
+                    <button class="qa-header" onclick="toggleQA('q-note-7-2')" aria-expanded="false">
+                        <span class="qa-num">3</span>
+                        <span class="qa-q">Focal length</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-note-7-2">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer: <span>The distance from the center of a lens to its focal point is called the focal length; the focal length of a convex lens is positive and that of a concave lens is negative.</span></div>
+                    
+                </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        
+            <div class="section-block" data-type="reason">
+                <div class="section-title-bar"><span class="section-dot"></span>Explain the Statements with Reasons</div>
+                <div class="section-qs">
+                <div class="qa-card" data-type="reason">
+                    <button class="qa-header" onclick="toggleQA('q-reason-7-0')" aria-expanded="false">
+                        <span class="qa-num">1</span>
+                        <span class="qa-q">The lens in the human eye is convex.</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-reason-7-0">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer:</div>
+                    <div class="answer-text">A convex lens forms a real, inverted image on the retina; the brain corrects it to be upright, so we see objects correctly.</div>
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="reason">
+                    <button class="qa-header" onclick="toggleQA('q-reason-7-1')" aria-expanded="false">
+                        <span class="qa-num">2</span>
+                        <span class="qa-q">A concave lens is used in spectacles for myopia.</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-reason-7-1">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer:</div>
+                    <div class="answer-text">In myopia, the image is formed in front of the retina; a concave lens diverges the rays, bringing the image onto the retina.</div>
+                </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        
+            <div class="section-block" data-type="fill">
+                <div class="section-title-bar"><span class="section-dot"></span>Fill in the Blanks</div>
+                <div class="section-qs">
+                <div class="qa-card" data-type="fill">
+                    <button class="qa-header" onclick="toggleQA('q-fill-7-0')" aria-expanded="false">
+                        <span class="qa-num">1</span>
+                        <span class="qa-q">A convex lens is also called a ________ lens.</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-fill-7-0">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer: <span>converging</span></div>
+                    
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="fill">
+                    <button class="qa-header" onclick="toggleQA('q-fill-7-1')" aria-expanded="false">
+                        <span class="qa-num">2</span>
+                        <span class="qa-q">A concave lens always gives a ________ image.</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-fill-7-1">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer: <span>virtual</span></div>
+                    
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="fill">
+                    <button class="qa-header" onclick="toggleQA('q-fill-7-2')" aria-expanded="false">
+                        <span class="qa-num">3</span>
+                        <span class="qa-q">________ lens is used to treat cataracts.</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-fill-7-2">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer: <span>Convex</span></div>
+                    
+                </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        
+            <div class="section-block" data-type="long">
+                <div class="section-title-bar"><span class="section-dot"></span>Detailed Answers</div>
+                <div class="section-qs">
+                <div class="qa-card" data-type="long">
+                    <button class="qa-header" onclick="toggleQA('q-long-7-0')" aria-expanded="false">
+                        <span class="qa-num">1</span>
+                        <span class="qa-q">Explain the differences between convex and concave lenses.</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-long-7-0">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer:</div>
+                    <div class="answer-text">Convex: thicker in middle, converging, real/virtual image, positive focal length. Concave: thinner in middle, diverging, always virtual/diminished image, negative focal length. Convex used in eye/camera/cataract; concave used in myopia spectacles.</div>
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="long">
+                    <button class="qa-header" onclick="toggleQA('q-long-7-1')" aria-expanded="false">
+                        <span class="qa-num">2</span>
+                        <span class="qa-q">Explain the structure of the eye and the role of its lens.</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-long-7-1">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer:</div>
+                    <div class="answer-text">The eye has a convex lens and a retina. The lens forms a real, inverted image on the retina; ciliary muscles change the curvature of the lens to control focal length (accommodation). The brain corrects the image to be upright.</div>
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="long">
+                    <button class="qa-header" onclick="toggleQA('q-long-7-2')" aria-expanded="false">
+                        <span class="qa-num">3</span>
+                        <span class="qa-q">Explain various applications of lenses (camera, microscope, telescope, spectacles).</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-long-7-2">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer:</div>
+                    <div class="answer-text">Camera: convex lens forms image on film. Microscope: magnifies small objects (convex). Telescope: brings distant objects closer (convex). Spectacles: convex for hypermetropia, concave for myopia.</div>
+                </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        
+        </div>
+    </main>
+
+    <script>
+        
+function goBack() {
+    if (window.history.length > 1) { window.history.back(); }
+    else { window.location.href = './sciencechapters_en.html'; }
+}
+function toggleQA(id) {
+    var body = document.getElementById(id);
+    var card = body.parentElement;
+    if (body.style.maxHeight && body.style.maxHeight !== '0px') {
+        body.style.maxHeight = '0px';
+        card.classList.remove('open');
+    } else {
+        body.style.maxHeight = body.scrollHeight + 'px';
+        card.classList.add('open');
+    }
+}
+function filterQA(type, el) {
+    document.querySelectorAll('.pill').forEach(function(p){ p.classList.remove('active'); });
+    el.classList.add('active');
+    document.querySelectorAll('.section-block').forEach(function(sec){
+        if (type === 'all' || sec.getAttribute('data-type') === type) {
+            sec.classList.remove('hidden');
+        } else {
+            sec.classList.add('hidden');
+        }
+    });
+}
+window.onload = function(){
+    document.querySelectorAll('.qa-body').forEach(function(b){ b.style.maxHeight = '0px'; });
+};
+    </script>
+</body>
+</html>

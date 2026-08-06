@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Effects of Electric Current - Self Study</title>
+    <style>
+        :root {
+    --primary-color: #0052D4;
+    --secondary-color: #38B6FF;
+    --bg-color: #FFFFFF;
+    --text-color: #1D2335;
+    --muted-bg: #F0F4F8;
+    --white-text: #FFFFFF;
+    --correct-bg: #E6F7EE;
+    --correct-border: #2BB673;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Nirmala UI', Tahoma, Geneva, Verdana, sans-serif; }
+body { background-color: var(--muted-bg); color: var(--text-color); min-height: 100vh; }
+
+.app-header {
+    background-color: var(--primary-color);
+    padding: 30px 24px;
+    color: var(--white-text);
+    position: relative;
+    border-bottom-left-radius: 32px;
+    border-bottom-right-radius: 32px;
+}
+.header-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+.back-btn {
+    background-color: rgba(255,255,255,0.2); color: var(--white-text); border: none;
+    width: 42px; height: 42px; border-radius: 50%; font-size: 20px; font-weight: 700;
+    cursor: pointer; line-height: 42px;
+}
+.header-label { font-weight: 700; font-size: 14px; letter-spacing: 0.5px; }
+.header-content { margin-top: 8px; }
+.app-title { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: var(--secondary-color); font-weight: 700; margin-bottom: 8px; }
+.main-heading { font-size: 24px; font-weight: 700; line-height: 1.3; }
+
+.content-body { padding: 28px 24px 48px 24px; max-width: 640px; margin: 0 auto; }
+
+.subtitle-banner {
+    background-color: var(--bg-color); border-radius: 16px; padding: 14px 18px; margin-bottom: 18px;
+    box-shadow: 0 4px 12px rgba(29,35,53,0.04); font-size: 13px; color: #7E8B9B; font-weight: 600;
+}
+
+.filter-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+.pill {
+    background-color: var(--muted-bg); color: var(--text-color); border: none;
+    padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: all 0.2s ease;
+}
+.pill.active { background-color: var(--primary-color); color: var(--white-text); }
+.pill:hover { background-color: var(--secondary-color); color: var(--white-text); }
+
+.section-block { margin-bottom: 26px; }
+.section-title-bar {
+    display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 700;
+    color: var(--primary-color); margin-bottom: 14px;
+}
+.section-dot { width: 10px; height: 10px; border-radius: 50%; background-color: var(--secondary-color); }
+
+.qa-card {
+    background-color: var(--bg-color); border-radius: 16px; margin-bottom: 12px;
+    box-shadow: 0 4px 12px rgba(29,35,53,0.04); overflow: hidden; border: 1px solid rgba(240,244,248,0.9);
+}
+.qa-header {
+    width: 100%; display: flex; align-items: flex-start; gap: 12px; text-align: left;
+    background: none; border: none; padding: 16px 18px; cursor: pointer; font-family: inherit;
+}
+.qa-num {
+    flex: 0 0 auto; width: 28px; height: 28px; border-radius: 50%; background-color: var(--muted-bg);
+    color: var(--primary-color); font-weight: 700; font-size: 14px; line-height: 28px; text-align: center;
+}
+.qa-q { flex: 1; text-align: left; font-size: 15px; font-weight: 600; line-height: 1.5; color: var(--text-color); }
+.qa-toggle { flex: 0 0 auto; font-size: 22px; font-weight: 700; color: var(--primary-color); line-height: 1; transition: transform 0.25s ease; }
+.qa-card.open .qa-toggle { transform: rotate(45deg); }
+
+.qa-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+.qa-inner { padding: 0 18px 18px 18px; text-align: left; }
+.options { list-style: none; margin: 6px 0 12px 0; }
+.options .opt { padding: 8px 12px; border-radius: 10px; background-color: var(--muted-bg); margin-bottom: 6px; font-size: 14px; }
+.options .opt.correct { background-color: var(--correct-bg); border: 1px solid var(--correct-border); font-weight: 600; }
+.ans-label { font-size: 14px; font-weight: 700; color: var(--text-color); margin-bottom: 6px; }
+.ans-label span { color: var(--correct-border); }
+.explain { font-size: 14px; line-height: 1.7; color: #4A5568; }
+.answer-text { font-size: 14px; line-height: 1.8; color: #2D3748; }
+
+.hidden { display: none !important; }
+        
+    </style>
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-nav">
+            <button class="back-btn" onclick="goBack()">←</button>
+            <span class="header-label">Chapter 4</span>
+        </div>
+        <div class="header-content">
+            <p class="app-title">Science & Technology 1</p>
+            <h1 class="main-heading">Effects of Electric Current</h1>
+        </div>
+    </header>
+
+    <main class="content-body">
+        <div class="subtitle-banner">Chapter 4 • Self Study (Questions & Answers)</div>
+
+        <div class="filter-bar"><button class="pill active" data-filter="all" onclick="filterQA('all', this)">All</button><button class="pill " data-filter="mcq" onclick="filterQA('mcq', this)">MCQ</button><button class="pill " data-filter="pair" onclick="filterQA('pair', this)">Wrong Pair</button><button class="pill " data-filter="note" onclick="filterQA('note', this)">Note</button><button class="pill " data-filter="reason" onclick="filterQA('reason', this)">Reason</button><button class="pill " data-filter="fill" onclick="filterQA('fill', this)">Fill Blanks</button><button class="pill " data-filter="long" onclick="filterQA('long', this)">Detailed</button></div>
+
+        <div id="sectionsContainer">
+            
+            <div class="section-block" data-type="mcq">
+                <div class="section-title-bar"><span class="section-dot"></span>Multiple Choice Questions</div>
+                <div class="section-qs">
+                <div class="qa-card" data-type="mcq">
+                    <button class="qa-header" onclick="toggleQA('q-mcq-4-0')" aria-expanded="false">
+                        <span class="qa-num">1</span>
+                        <span class="qa-q">What phenomenon occurs when electric current flows through a conductor?</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-mcq-4-0">
+                        <div class="qa-inner">
+                    <ul class="options"><li class="opt ">a) Light production</li><li class="opt correct">b) Heat production (heating)</li><li class="opt ">c) Sound production</li><li class="opt ">d) Gravitation</li></ul>
+                    <div class="ans-label">✅ Answer: <span>b) Heat production (heating)</span></div>
+                    <p class="explain">When electric current flows through a conductor, the conductor becomes hot; this is called Joule heating. H = I²Rt.</p>
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="mcq">
+                    <button class="qa-header" onclick="toggleQA('q-mcq-4-1')" aria-expanded="false">
+                        <span class="qa-num">2</span>
+                        <span class="qa-q">Which instrument is used to measure electric current?</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-mcq-4-1">
+                        <div class="qa-inner">
+                    <ul class="options"><li class="opt ">a) Voltmeter</li><li class="opt correct">b) Ammeter</li><li class="opt ">c) Galvanometer</li><li class="opt ">d) Transformer</li></ul>
+                    <div class="ans-label">✅ Answer: <span>b) Ammeter</span></div>
+                    <p class="explain">An ammeter measures electric current and is connected in series in the circuit.</p>
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="mcq">
+                    <button class="qa-header" onclick="toggleQA('q-mcq-4-2')" aria-expanded="false">
+                        <span class="qa-num">3</span>
+                        <span class="qa-q">How is an electromagnet made?</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-mcq-4-2">
+                        <div class="qa-inner">
+                    <ul class="options"><li class="opt ">a) By static electric charge</li><li class="opt correct">b) By a current-carrying coil</li><li class="opt ">c) By heat</li><li class="opt ">d) By light</li></ul>
+                    <div class="ans-label">✅ Answer: <span>b) By a current-carrying coil</span></div>
+                    <p class="explain">When electric current flows through a wire wound around an iron or soft iron core, it becomes an electromagnet.</p>
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="mcq">
+                    <button class="qa-header" onclick="toggleQA('q-mcq-4-3')" aria-expanded="false">
+                        <span class="qa-num">4</span>
+                        <span class="qa-q">What is Fleming's left-hand rule used for?</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-mcq-4-3">
+                        <div class="qa-inner">
+                    <ul class="options"><li class="opt ">a) Voltage</li><li class="opt correct">b) Direction of electromagnetic force</li><li class="opt ">c) Mass</li><li class="opt ">d) Temperature</li></ul>
+                    <div class="ans-label">✅ Answer: <span>b) Direction of electromagnetic force</span></div>
+                    <p class="explain">The direction of force acting on a current-carrying conductor in a magnetic field is given by Fleming's left-hand rule.</p>
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="mcq">
+                    <button class="qa-header" onclick="toggleQA('q-mcq-4-4')" aria-expanded="false">
+                        <span class="qa-num">5</span>
+                        <span class="qa-q">What is a voltmeter used for?</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-mcq-4-4">
+                        <div class="qa-inner">
+                    <ul class="options"><li class="opt ">a) Measuring current</li><li class="opt correct">b) Measuring potential difference</li><li class="opt ">c) Measuring resistance</li><li class="opt ">d) Frequency</li></ul>
+                    <div class="ans-label">✅ Answer: <span>b) Measuring potential difference</span></div>
+                    <p class="explain">A voltmeter measures potential difference (voltage) between two points and is connected in parallel in the circuit.</p>
+                </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        
+            <div class="section-block" data-type="pair">
+                <div class="section-title-bar"><span class="section-dot"></span>Identify the Wrong Pair</div>
+                <div class="section-qs">
+                <div class="qa-card" data-type="pair">
+                    <button class="qa-header" onclick="toggleQA('q-pair-4-0')" aria-expanded="false">
+                        <span class="qa-num">1</span>
+                        <span class="qa-q">Which of the following is the wrong pair? (1) Ammeter – Current (2) Voltmeter – Potential difference (3) Transformer – Frequency (4) Electromagnet – Electric current</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-pair-4-0">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Wrong Pair: <span>(3) Transformer – Frequency</span></div>
+                    <p class="explain">A transformer is used to increase or decrease voltage (voltage), not frequency.</p>
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="pair">
+                    <button class="qa-header" onclick="toggleQA('q-pair-4-1')" aria-expanded="false">
+                        <span class="qa-num">2</span>
+                        <span class="qa-q">Which of the following is the wrong pair? (1) Fleming left – Force (2) Fleming right – Voltage (3) Lenz – Induction (4) Ohm – Electric current</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-pair-4-1">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Wrong Pair: <span>(2) Fleming right – Voltage</span></div>
+                    <p class="explain">Fleming's right-hand rule gives the direction of induced current (electromagnetic induction), not voltage.</p>
+                </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        
+            <div class="section-block" data-type="note">
+                <div class="section-title-bar"><span class="section-dot"></span>Write a Note</div>
+                <div class="section-qs">
+                <div class="qa-card" data-type="note">
+                    <button class="qa-header" onclick="toggleQA('q-note-4-0')" aria-expanded="false">
+                        <span class="qa-num">1</span>
+                        <span class="qa-q">Electromagnet</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-note-4-0">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer: <span>When electric current is passed through a coil of wire wound around a soft iron core, it becomes a magnet; the magnetism disappears when the current is switched off; this is called an electromagnet.</span></div>
+                    
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="note">
+                    <button class="qa-header" onclick="toggleQA('q-note-4-1')" aria-expanded="false">
+                        <span class="qa-num">2</span>
+                        <span class="qa-q">Joule heating</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-note-4-1">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer: <span>When electric current flows through a conductor, heat is produced in the conductor; H = I²Rt. This is used in bulbs, irons, and kettles.</span></div>
+                    
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="note">
+                    <button class="qa-header" onclick="toggleQA('q-note-4-2')" aria-expanded="false">
+                        <span class="qa-num">3</span>
+                        <span class="qa-q">Electromagnetic induction</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-note-4-2">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer: <span>The phenomenon of induced current being produced in a conductor due to a changing magnetic field is called electromagnetic induction; this is the principle of a generator.</span></div>
+                    
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="note">
+                    <button class="qa-header" onclick="toggleQA('q-note-4-3')" aria-expanded="false">
+                        <span class="qa-num">4</span>
+                        <span class="qa-q">Fleming's rules</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-note-4-3">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer: <span>Left-hand rule gives the direction of magnetic force on a current-carrying conductor; right-hand rule gives the direction of induced current.</span></div>
+                    
+                </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        
+            <div class="section-block" data-type="reason">
+                <div class="section-title-bar"><span class="section-dot"></span>Explain the Statements with Reasons</div>
+                <div class="section-qs">
+                <div class="qa-card" data-type="reason">
+                    <button class="qa-header" onclick="toggleQA('q-reason-4-0')" aria-expanded="false">
+                        <span class="qa-num">1</span>
+                        <span class="qa-q">A current-carrying wire becomes hot.</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-reason-4-0">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer:</div>
+                    <div class="answer-text">Free electrons in the conductor collide with the molecules of the conductor, converting kinetic energy into heat, making the wire hot (Joule heating).</div>
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="reason">
+                    <button class="qa-header" onclick="toggleQA('q-reason-4-1')" aria-expanded="false">
+                        <span class="qa-num">2</span>
+                        <span class="qa-q">A generator works due to electromagnetic induction.</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-reason-4-1">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer:</div>
+                    <div class="answer-text">In a generator, a coil is rotated in a changing magnetic field, producing induced current; this is the principle of electromagnetic induction.</div>
+                </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        
+            <div class="section-block" data-type="fill">
+                <div class="section-title-bar"><span class="section-dot"></span>Fill in the Blanks</div>
+                <div class="section-qs">
+                <div class="qa-card" data-type="fill">
+                    <button class="qa-header" onclick="toggleQA('q-fill-4-0')" aria-expanded="false">
+                        <span class="qa-num">1</span>
+                        <span class="qa-q">________ is used to measure electric current.</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-fill-4-0">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer: <span>Ammeter</span></div>
+                    
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="fill">
+                    <button class="qa-header" onclick="toggleQA('q-fill-4-1')" aria-expanded="false">
+                        <span class="qa-num">2</span>
+                        <span class="qa-q">The force of an electromagnet is given by ________ rule.</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-fill-4-1">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer: <span>Fleming's left-hand</span></div>
+                    
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="fill">
+                    <button class="qa-header" onclick="toggleQA('q-fill-4-2')" aria-expanded="false">
+                        <span class="qa-num">3</span>
+                        <span class="qa-q">H = I²Rt is the law of ________.</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-fill-4-2">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer: <span>Joule heating</span></div>
+                    
+                </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        
+            <div class="section-block" data-type="long">
+                <div class="section-title-bar"><span class="section-dot"></span>Detailed Answers</div>
+                <div class="section-qs">
+                <div class="qa-card" data-type="long">
+                    <button class="qa-header" onclick="toggleQA('q-long-4-0')" aria-expanded="false">
+                        <span class="qa-num">1</span>
+                        <span class="qa-q">What is an electromagnet? Explain its applications.</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-long-4-0">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer:</div>
+                    <div class="answer-text">When a current-carrying wire wound around a soft iron core becomes a magnet, it is called an electromagnet. Applications: electric bell, motors, lifts, MRI machines, scrap separation, railways, etc.</div>
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="long">
+                    <button class="qa-header" onclick="toggleQA('q-long-4-1')" aria-expanded="false">
+                        <span class="qa-num">2</span>
+                        <span class="qa-q">Explain Fleming's left-hand and right-hand rules.</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-long-4-1">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer:</div>
+                    <div class="answer-text">Left hand: forefinger = current, middle finger = magnetic field, thumb = direction of force. Right hand: forefinger = changing magnetic field, thumb = direction of induced current. Left for force, right for induced current.</div>
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="long">
+                    <button class="qa-header" onclick="toggleQA('q-long-4-2')" aria-expanded="false">
+                        <span class="qa-num">3</span>
+                        <span class="qa-q">Explain the heating effects of electric current and their applications.</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-long-4-2">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer:</div>
+                    <div class="answer-text">When electric current flows through a conductor, heat is produced (H = I²Rt). Applications: electric bulb, iron, kettle, heater, toaster. Adverse effects include energy loss in wiring and accidents.</div>
+                </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        
+        </div>
+    </main>
+
+    <script>
+        
+function goBack() {
+    if (window.history.length > 1) { window.history.back(); }
+    else { window.location.href = './sciencechapters_en.html'; }
+}
+function toggleQA(id) {
+    var body = document.getElementById(id);
+    var card = body.parentElement;
+    if (body.style.maxHeight && body.style.maxHeight !== '0px') {
+        body.style.maxHeight = '0px';
+        card.classList.remove('open');
+    } else {
+        body.style.maxHeight = body.scrollHeight + 'px';
+        card.classList.add('open');
+    }
+}
+function filterQA(type, el) {
+    document.querySelectorAll('.pill').forEach(function(p){ p.classList.remove('active'); });
+    el.classList.add('active');
+    document.querySelectorAll('.section-block').forEach(function(sec){
+        if (type === 'all' || sec.getAttribute('data-type') === type) {
+            sec.classList.remove('hidden');
+        } else {
+            sec.classList.add('hidden');
+        }
+    });
+}
+window.onload = function(){
+    document.querySelectorAll('.qa-body').forEach(function(b){ b.style.maxHeight = '0px'; });
+};
+    </script>
+</body>
+</html>

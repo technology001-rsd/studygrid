@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Missions - Self Study</title>
+    <style>
+        :root {
+    --primary-color: #0052D4;
+    --secondary-color: #38B6FF;
+    --bg-color: #FFFFFF;
+    --text-color: #1D2335;
+    --muted-bg: #F0F4F8;
+    --white-text: #FFFFFF;
+    --correct-bg: #E6F7EE;
+    --correct-border: #2BB673;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Nirmala UI', Tahoma, Geneva, Verdana, sans-serif; }
+body { background-color: var(--muted-bg); color: var(--text-color); min-height: 100vh; }
+
+.app-header {
+    background-color: var(--primary-color);
+    padding: 30px 24px;
+    color: var(--white-text);
+    position: relative;
+    border-bottom-left-radius: 32px;
+    border-bottom-right-radius: 32px;
+}
+.header-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+.back-btn {
+    background-color: rgba(255,255,255,0.2); color: var(--white-text); border: none;
+    width: 42px; height: 42px; border-radius: 50%; font-size: 20px; font-weight: 700;
+    cursor: pointer; line-height: 42px;
+}
+.header-label { font-weight: 700; font-size: 14px; letter-spacing: 0.5px; }
+.header-content { margin-top: 8px; }
+.app-title { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: var(--secondary-color); font-weight: 700; margin-bottom: 8px; }
+.main-heading { font-size: 24px; font-weight: 700; line-height: 1.3; }
+
+.content-body { padding: 28px 24px 48px 24px; max-width: 640px; margin: 0 auto; }
+
+.subtitle-banner {
+    background-color: var(--bg-color); border-radius: 16px; padding: 14px 18px; margin-bottom: 18px;
+    box-shadow: 0 4px 12px rgba(29,35,53,0.04); font-size: 13px; color: #7E8B9B; font-weight: 600;
+}
+
+.filter-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+.pill {
+    background-color: var(--muted-bg); color: var(--text-color); border: none;
+    padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: all 0.2s ease;
+}
+.pill.active { background-color: var(--primary-color); color: var(--white-text); }
+.pill:hover { background-color: var(--secondary-color); color: var(--white-text); }
+
+.section-block { margin-bottom: 26px; }
+.section-title-bar {
+    display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 700;
+    color: var(--primary-color); margin-bottom: 14px;
+}
+.section-dot { width: 10px; height: 10px; border-radius: 50%; background-color: var(--secondary-color); }
+
+.qa-card {
+    background-color: var(--bg-color); border-radius: 16px; margin-bottom: 12px;
+    box-shadow: 0 4px 12px rgba(29,35,53,0.04); overflow: hidden; border: 1px solid rgba(240,244,248,0.9);
+}
+.qa-header {
+    width: 100%; display: flex; align-items: flex-start; gap: 12px; text-align: left;
+    background: none; border: none; padding: 16px 18px; cursor: pointer; font-family: inherit;
+}
+.qa-num {
+    flex: 0 0 auto; width: 28px; height: 28px; border-radius: 50%; background-color: var(--muted-bg);
+    color: var(--primary-color); font-weight: 700; font-size: 14px; line-height: 28px; text-align: center;
+}
+.qa-q { flex: 1; text-align: left; font-size: 15px; font-weight: 600; line-height: 1.5; color: var(--text-color); }
+.qa-toggle { flex: 0 0 auto; font-size: 22px; font-weight: 700; color: var(--primary-color); line-height: 1; transition: transform 0.25s ease; }
+.qa-card.open .qa-toggle { transform: rotate(45deg); }
+
+.qa-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+.qa-inner { padding: 0 18px 18px 18px; text-align: left; }
+.options { list-style: none; margin: 6px 0 12px 0; }
+.options .opt { padding: 8px 12px; border-radius: 10px; background-color: var(--muted-bg); margin-bottom: 6px; font-size: 14px; }
+.options .opt.correct { background-color: var(--correct-bg); border: 1px solid var(--correct-border); font-weight: 600; }
+.ans-label { font-size: 14px; font-weight: 700; color: var(--text-color); margin-bottom: 6px; }
+.ans-label span { color: var(--correct-border); }
+.explain { font-size: 14px; line-height: 1.7; color: #4A5568; }
+.answer-text { font-size: 14px; line-height: 1.8; color: #2D3748; }
+
+.hidden { display: none !important; }
+        
+    </style>
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-nav">
+            <button class="back-btn" onclick="goBack()">←</button>
+            <span class="header-label">Chapter 10</span>
+        </div>
+        <div class="header-content">
+            <p class="app-title">Science & Technology 1</p>
+            <h1 class="main-heading">Space Missions</h1>
+        </div>
+    </header>
+
+    <main class="content-body">
+        <div class="subtitle-banner">Chapter 10 • Self Study (Questions & Answers)</div>
+
+        <div class="filter-bar"><button class="pill active" data-filter="all" onclick="filterQA('all', this)">All</button><button class="pill " data-filter="mcq" onclick="filterQA('mcq', this)">MCQ</button><button class="pill " data-filter="pair" onclick="filterQA('pair', this)">Wrong Pair</button><button class="pill " data-filter="note" onclick="filterQA('note', this)">Note</button><button class="pill " data-filter="reason" onclick="filterQA('reason', this)">Reason</button><button class="pill " data-filter="fill" onclick="filterQA('fill', this)">Fill Blanks</button><button class="pill " data-filter="long" onclick="filterQA('long', this)">Detailed</button></div>
+
+        <div id="sectionsContainer">
+            
+            <div class="section-block" data-type="mcq">
+                <div class="section-title-bar"><span class="section-dot"></span>Multiple Choice Questions</div>
+                <div class="section-qs">
+                <div class="qa-card" data-type="mcq">
+                    <button class="qa-header" onclick="toggleQA('q-mcq-10-0')" aria-expanded="false">
+                        <span class="qa-num">1</span>
+                        <span class="qa-q">Who made the first human spaceflight?</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-mcq-10-0">
+                        <div class="qa-inner">
+                    <ul class="options"><li class="opt ">a) Neil Armstrong</li><li class="opt correct">b) Yuri Gagarin</li><li class="opt ">c) Rakesh Sharma</li><li class="opt ">d) Kalpana Chawla</li></ul>
+                    <div class="ans-label">✅ Answer: <span>b) Yuri Gagarin</span></div>
+                    <p class="explain">In 1961, Yuri Gagarin (Russia) was the first human to travel into space (Vostok-1).</p>
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="mcq">
+                    <button class="qa-header" onclick="toggleQA('q-mcq-10-1')" aria-expanded="false">
+                        <span class="qa-num">2</span>
+                        <span class="qa-q">What was India's first satellite?</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-mcq-10-1">
+                        <div class="qa-inner">
+                    <ul class="options"><li class="opt ">a) INSAT-1</li><li class="opt correct">b) Aryabhata</li><li class="opt ">c) Chandrayaan-1</li><li class="opt ">d) Mangalyaan</li></ul>
+                    <div class="ans-label">✅ Answer: <span>b) Aryabhata</span></div>
+                    <p class="explain">Aryabhata (1975) was India's first satellite; it was named after the mathematician Aryabhata.</p>
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="mcq">
+                    <button class="qa-header" onclick="toggleQA('q-mcq-10-2')" aria-expanded="false">
+                        <span class="qa-num">3</span>
+                        <span class="qa-q">In which year was Chandrayaan-1 launched?</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-mcq-10-2">
+                        <div class="qa-inner">
+                    <ul class="options"><li class="opt correct">a) 2008</li><li class="opt ">b) 2014</li><li class="opt ">c) 1969</li><li class="opt ">d) 1984</li></ul>
+                    <div class="ans-label">✅ Answer: <span>a) 2008</span></div>
+                    <p class="explain">India successfully launched Chandrayaan-1 in 2008; it found evidence of water on the Moon.</p>
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="mcq">
+                    <button class="qa-header" onclick="toggleQA('q-mcq-10-3')" aria-expanded="false">
+                        <span class="qa-num">4</span>
+                        <span class="qa-q">In which year was the Mars Orbiter Mission (MOM/Mangalyaan) successful?</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-mcq-10-3">
+                        <div class="qa-inner">
+                    <ul class="options"><li class="opt ">a) 2008</li><li class="opt correct">b) 2014</li><li class="opt ">c) 2019</li><li class="opt ">d) 1975</li></ul>
+                    <div class="ans-label">✅ Answer: <span>b) 2014</span></div>
+                    <p class="explain">India's Mangalyaan (Mars Orbiter Mission) successfully entered Mars orbit in 2014; India became the first country to do so in its first attempt.</p>
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="mcq">
+                    <button class="qa-header" onclick="toggleQA('q-mcq-10-4')" aria-expanded="false">
+                        <span class="qa-num">5</span>
+                        <span class="qa-q">What is India's space agency?</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-mcq-10-4">
+                        <div class="qa-inner">
+                    <ul class="options"><li class="opt ">a) NASA</li><li class="opt correct">b) ISRO</li><li class="opt ">c) ESA</li><li class="opt ">d) Roscosmos</li></ul>
+                    <div class="ans-label">✅ Answer: <span>b) ISRO</span></div>
+                    <p class="explain">ISRO (Indian Space Research Organisation) is India's space agency; headquarters is in Bengaluru.</p>
+                </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        
+            <div class="section-block" data-type="pair">
+                <div class="section-title-bar"><span class="section-dot"></span>Identify the Wrong Pair</div>
+                <div class="section-qs">
+                <div class="qa-card" data-type="pair">
+                    <button class="qa-header" onclick="toggleQA('q-pair-10-0')" aria-expanded="false">
+                        <span class="qa-num">1</span>
+                        <span class="qa-q">Which of the following is the wrong pair? (1) Yuri Gagarin – First human spaceflight (2) Neil Armstrong – First steps on the Moon (3) Aryabhata – India's first satellite (4) Chandrayaan-1 – Mars</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-pair-10-0">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Wrong Pair: <span>(4) Chandrayaan-1 – Mars</span></div>
+                    <p class="explain">Chandrayaan-1 was sent to the Moon; Mangalyaan (MOM) went to Mars.</p>
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="pair">
+                    <button class="qa-header" onclick="toggleQA('q-pair-10-1')" aria-expanded="false">
+                        <span class="qa-num">2</span>
+                        <span class="qa-q">Which of the following is the wrong pair? (1) PSLV – Satellite launch (2) GSLV – Heavy satellite (3) Chandrayaan-2 – Venus (4) Mangalyaan – Mars</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-pair-10-1">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Wrong Pair: <span>(3) Chandrayaan-2 – Venus</span></div>
+                    <p class="explain">Chandrayaan-2 was launched to the Moon (south pole), not Venus.</p>
+                </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        
+            <div class="section-block" data-type="note">
+                <div class="section-title-bar"><span class="section-dot"></span>Write a Note</div>
+                <div class="section-qs">
+                <div class="qa-card" data-type="note">
+                    <button class="qa-header" onclick="toggleQA('q-note-10-0')" aria-expanded="false">
+                        <span class="qa-num">1</span>
+                        <span class="qa-q">Space mission</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-note-10-0">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer: <span>A program to send satellites, spacecraft, and probes into space beyond Earth's atmosphere is called a space mission; e.g., Chandrayaan, Mangalyaan.</span></div>
+                    
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="note">
+                    <button class="qa-header" onclick="toggleQA('q-note-10-1')" aria-expanded="false">
+                        <span class="qa-num">2</span>
+                        <span class="qa-q">Satellite</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-note-10-1">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer: <span>A natural or artificial object revolving in orbit around Earth is called a satellite. Artificial satellites are used for communication, weather, and observation.</span></div>
+                    
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="note">
+                    <button class="qa-header" onclick="toggleQA('q-note-10-2')" aria-expanded="false">
+                        <span class="qa-num">3</span>
+                        <span class="qa-q">Launch vehicle</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-note-10-2">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer: <span>A rocket system that releases satellites and spacecraft from Earth's gravity into orbit is called a launch vehicle; e.g., PSLV, GSLV.</span></div>
+                    
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="note">
+                    <button class="qa-header" onclick="toggleQA('q-note-10-3')" aria-expanded="false">
+                        <span class="qa-num">4</span>
+                        <span class="qa-q">ISRO</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-note-10-3">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer: <span>The Indian Space Research Organisation is India's space research organization; it has successfully conducted missions like Chandrayaan, Mangalyaan, and NavIC.</span></div>
+                    
+                </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        
+            <div class="section-block" data-type="reason">
+                <div class="section-title-bar"><span class="section-dot"></span>Explain the Statements with Reasons</div>
+                <div class="section-qs">
+                <div class="qa-card" data-type="reason">
+                    <button class="qa-header" onclick="toggleQA('q-reason-10-0')" aria-expanded="false">
+                        <span class="qa-num">1</span>
+                        <span class="qa-q">India successfully completed the Mars mission at low cost.</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-reason-10-0">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer:</div>
+                    <div class="answer-text">ISRO successfully completed Mangalyaan in its first attempt at an extremely low cost (about ₹450 crore); this is a world record and demonstrates India's technological capability.</div>
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="reason">
+                    <button class="qa-header" onclick="toggleQA('q-reason-10-1')" aria-expanded="false">
+                        <span class="qa-num">2</span>
+                        <span class="qa-q">A specific velocity is required to keep a satellite in orbit around Earth.</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-reason-10-1">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer:</div>
+                    <div class="answer-text">A satellite needs the gravitational force to provide centripetal force; for this, it must achieve orbital velocity (√(GM/R)), otherwise the satellite would fall back or be lost in space.</div>
+                </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        
+            <div class="section-block" data-type="fill">
+                <div class="section-title-bar"><span class="section-dot"></span>Fill in the Blanks</div>
+                <div class="section-qs">
+                <div class="qa-card" data-type="fill">
+                    <button class="qa-header" onclick="toggleQA('q-fill-10-0')" aria-expanded="false">
+                        <span class="qa-num">1</span>
+                        <span class="qa-q">India's space agency is ________.</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-fill-10-0">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer: <span>ISRO</span></div>
+                    
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="fill">
+                    <button class="qa-header" onclick="toggleQA('q-fill-10-1')" aria-expanded="false">
+                        <span class="qa-num">2</span>
+                        <span class="qa-q">The first human spaceflight was made by ________.</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-fill-10-1">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer: <span>Yuri Gagarin</span></div>
+                    
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="fill">
+                    <button class="qa-header" onclick="toggleQA('q-fill-10-2')" aria-expanded="false">
+                        <span class="qa-num">3</span>
+                        <span class="qa-q">India's first satellite was ________.</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-fill-10-2">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer: <span>Aryabhata</span></div>
+                    
+                </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        
+            <div class="section-block" data-type="long">
+                <div class="section-title-bar"><span class="section-dot"></span>Detailed Answers</div>
+                <div class="section-qs">
+                <div class="qa-card" data-type="long">
+                    <button class="qa-header" onclick="toggleQA('q-long-10-0')" aria-expanded="false">
+                        <span class="qa-num">1</span>
+                        <span class="qa-q">Review India's space missions (Chandrayaan, Mangalyaan).</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-long-10-0">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer:</div>
+                    <div class="answer-text">Chandrayaan-1 (2008): Discovered water on the Moon. Chandrayaan-2 (2019): Targeted the Moon's south pole. Mangalyaan (2014): Success in Mars orbit, first attempt. NavIC (2013): Navigation satellites. These strengthened India's position in the space sector.</div>
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="long">
+                    <button class="qa-header" onclick="toggleQA('q-long-10-1')" aria-expanded="false">
+                        <span class="qa-num">2</span>
+                        <span class="qa-q">Explain the importance of satellites and launch vehicles.</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-long-10-1">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer:</div>
+                    <div class="answer-text">Satellites are essential for communication, weather forecasting, navigation, defense, and Earth observation. Launch vehicles (PSLV/GSLV) place them in orbit; indigenous launch vehicles provide self-reliance and low cost.</div>
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="long">
+                    <button class="qa-header" onclick="toggleQA('q-long-10-2')" aria-expanded="false">
+                        <span class="qa-num">3</span>
+                        <span class="qa-q">Explain the benefits of space research to humanity.</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-long-10-2">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer:</div>
+                    <div class="answer-text">Space research provides: (1) Telecommunications and internet, (2) Accurate weather and natural disaster warnings, (3) GPS/navigation, (4) Earth resource and environmental monitoring, (5) Scientific knowledge and technological progress.</div>
+                </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        
+        </div>
+    </main>
+
+    <script>
+        
+function goBack() {
+    if (window.history.length > 1) { window.history.back(); }
+    else { window.location.href = './sciencechapters_en.html'; }
+}
+function toggleQA(id) {
+    var body = document.getElementById(id);
+    var card = body.parentElement;
+    if (body.style.maxHeight && body.style.maxHeight !== '0px') {
+        body.style.maxHeight = '0px';
+        card.classList.remove('open');
+    } else {
+        body.style.maxHeight = body.scrollHeight + 'px';
+        card.classList.add('open');
+    }
+}
+function filterQA(type, el) {
+    document.querySelectorAll('.pill').forEach(function(p){ p.classList.remove('active'); });
+    el.classList.add('active');
+    document.querySelectorAll('.section-block').forEach(function(sec){
+        if (type === 'all' || sec.getAttribute('data-type') === type) {
+            sec.classList.remove('hidden');
+        } else {
+            sec.classList.add('hidden');
+        }
+    });
+}
+window.onload = function(){
+    document.querySelectorAll('.qa-body').forEach(function(b){ b.style.maxHeight = '0px'; });
+};
+    </script>
+</body>
+</html>

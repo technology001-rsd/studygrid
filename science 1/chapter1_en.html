@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gravitation - Self Study</title>
+    <style>
+        :root {
+    --primary-color: #0052D4;
+    --secondary-color: #38B6FF;
+    --bg-color: #FFFFFF;
+    --text-color: #1D2335;
+    --muted-bg: #F0F4F8;
+    --white-text: #FFFFFF;
+    --correct-bg: #E6F7EE;
+    --correct-border: #2BB673;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Nirmala UI', Tahoma, Geneva, Verdana, sans-serif; }
+body { background-color: var(--muted-bg); color: var(--text-color); min-height: 100vh; }
+
+.app-header {
+    background-color: var(--primary-color);
+    padding: 30px 24px;
+    color: var(--white-text);
+    position: relative;
+    border-bottom-left-radius: 32px;
+    border-bottom-right-radius: 32px;
+}
+.header-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+.back-btn {
+    background-color: rgba(255,255,255,0.2); color: var(--white-text); border: none;
+    width: 42px; height: 42px; border-radius: 50%; font-size: 20px; font-weight: 700;
+    cursor: pointer; line-height: 42px;
+}
+.header-label { font-weight: 700; font-size: 14px; letter-spacing: 0.5px; }
+.header-content { margin-top: 8px; }
+.app-title { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: var(--secondary-color); font-weight: 700; margin-bottom: 8px; }
+.main-heading { font-size: 24px; font-weight: 700; line-height: 1.3; }
+
+.content-body { padding: 28px 24px 48px 24px; max-width: 640px; margin: 0 auto; }
+
+.subtitle-banner {
+    background-color: var(--bg-color); border-radius: 16px; padding: 14px 18px; margin-bottom: 18px;
+    box-shadow: 0 4px 12px rgba(29,35,53,0.04); font-size: 13px; color: #7E8B9B; font-weight: 600;
+}
+
+.filter-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+.pill {
+    background-color: var(--muted-bg); color: var(--text-color); border: none;
+    padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: all 0.2s ease;
+}
+.pill.active { background-color: var(--primary-color); color: var(--white-text); }
+.pill:hover { background-color: var(--secondary-color); color: var(--white-text); }
+
+.section-block { margin-bottom: 26px; }
+.section-title-bar {
+    display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 700;
+    color: var(--primary-color); margin-bottom: 14px;
+}
+.section-dot { width: 10px; height: 10px; border-radius: 50%; background-color: var(--secondary-color); }
+
+.qa-card {
+    background-color: var(--bg-color); border-radius: 16px; margin-bottom: 12px;
+    box-shadow: 0 4px 12px rgba(29,35,53,0.04); overflow: hidden; border: 1px solid rgba(240,244,248,0.9);
+}
+.qa-header {
+    width: 100%; display: flex; align-items: flex-start; gap: 12px; text-align: left;
+    background: none; border: none; padding: 16px 18px; cursor: pointer; font-family: inherit;
+}
+.qa-num {
+    flex: 0 0 auto; width: 28px; height: 28px; border-radius: 50%; background-color: var(--muted-bg);
+    color: var(--primary-color); font-weight: 700; font-size: 14px; line-height: 28px; text-align: center;
+}
+.qa-q { flex: 1; text-align: left; font-size: 15px; font-weight: 600; line-height: 1.5; color: var(--text-color); }
+.qa-toggle { flex: 0 0 auto; font-size: 22px; font-weight: 700; color: var(--primary-color); line-height: 1; transition: transform 0.25s ease; }
+.qa-card.open .qa-toggle { transform: rotate(45deg); }
+
+.qa-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+.qa-inner { padding: 0 18px 18px 18px; text-align: left; }
+.options { list-style: none; margin: 6px 0 12px 0; }
+.options .opt { padding: 8px 12px; border-radius: 10px; background-color: var(--muted-bg); margin-bottom: 6px; font-size: 14px; }
+.options .opt.correct { background-color: var(--correct-bg); border: 1px solid var(--correct-border); font-weight: 600; }
+.ans-label { font-size: 14px; font-weight: 700; color: var(--text-color); margin-bottom: 6px; }
+.ans-label span { color: var(--correct-border); }
+.explain { font-size: 14px; line-height: 1.7; color: #4A5568; }
+.answer-text { font-size: 14px; line-height: 1.8; color: #2D3748; }
+
+.hidden { display: none !important; }
+        
+    </style>
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-nav">
+            <button class="back-btn" onclick="goBack()">←</button>
+            <span class="header-label">Chapter 1</span>
+        </div>
+        <div class="header-content">
+            <p class="app-title">Science & Technology 1</p>
+            <h1 class="main-heading">Gravitation</h1>
+        </div>
+    </header>
+
+    <main class="content-body">
+        <div class="subtitle-banner">Chapter 1 • Self Study (Questions & Answers)</div>
+
+        <div class="filter-bar"><button class="pill active" data-filter="all" onclick="filterQA('all', this)">All</button><button class="pill " data-filter="mcq" onclick="filterQA('mcq', this)">MCQ</button><button class="pill " data-filter="pair" onclick="filterQA('pair', this)">Wrong Pair</button><button class="pill " data-filter="note" onclick="filterQA('note', this)">Note</button><button class="pill " data-filter="reason" onclick="filterQA('reason', this)">Reason</button><button class="pill " data-filter="fill" onclick="filterQA('fill', this)">Fill Blanks</button><button class="pill " data-filter="long" onclick="filterQA('long', this)">Detailed</button></div>
+
+        <div id="sectionsContainer">
+            
+            <div class="section-block" data-type="mcq">
+                <div class="section-title-bar"><span class="section-dot"></span>Multiple Choice Questions</div>
+                <div class="section-qs">
+                <div class="qa-card" data-type="mcq">
+                    <button class="qa-header" onclick="toggleQA('q-mcq-1-0')" aria-expanded="false">
+                        <span class="qa-num">1</span>
+                        <span class="qa-q">What is the value of the universal gravitational constant (G)?</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-mcq-1-0">
+                        <div class="qa-inner">
+                    <ul class="options"><li class="opt correct">a) 6.67 × 10⁻¹¹ Nm²/kg²</li><li class="opt ">b) 9.8 m/s²</li><li class="opt ">c) 3.14 × 10⁸ m/s</li><li class="opt ">d) 1.6 × 10⁻¹⁹ C</li></ul>
+                    <div class="ans-label">✅ Answer: <span>a) 6.67 × 10⁻¹¹ Nm²/kg²</span></div>
+                    <p class="explain">The gravitational constant G = 6.67 × 10⁻¹¹ Nm²/kg². It is the same throughout the universe and was measured by Cavendish through experiments.</p>
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="mcq">
+                    <button class="qa-header" onclick="toggleQA('q-mcq-1-1')" aria-expanded="false">
+                        <span class="qa-num">2</span>
+                        <span class="qa-q">What is the value of gravitational acceleration (g) on Earth's surface?</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-mcq-1-1">
+                        <div class="qa-inner">
+                    <ul class="options"><li class="opt ">a) 1.6 m/s²</li><li class="opt correct">b) 9.8 m/s²</li><li class="opt ">c) 3.7 m/s²</li><li class="opt ">d) 24 m/s²</li></ul>
+                    <div class="ans-label">✅ Answer: <span>b) 9.8 m/s²</span></div>
+                    <p class="explain">On Earth, g = 9.8 m/s². On the Moon, it is 1.6 m/s², which is about 1/6 of Earth's gravity.</p>
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="mcq">
+                    <button class="qa-header" onclick="toggleQA('q-mcq-1-2')" aria-expanded="false">
+                        <span class="qa-num">3</span>
+                        <span class="qa-q">The gravitational acceleration on the Moon is what fraction of that on Earth?</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-mcq-1-2">
+                        <div class="qa-inner">
+                    <ul class="options"><li class="opt ">a) 1/2</li><li class="opt ">b) 1/4</li><li class="opt correct">c) 1/6</li><li class="opt ">d) 1/10</li></ul>
+                    <div class="ans-label">✅ Answer: <span>c) 1/6</span></div>
+                    <p class="explain">Due to the Moon's lower mass and radius, its g is 1/6 of Earth's.</p>
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="mcq">
+                    <button class="qa-header" onclick="toggleQA('q-mcq-1-3')" aria-expanded="false">
+                        <span class="qa-num">4</span>
+                        <span class="qa-q">What is the relationship between escape velocity (vₑ) and orbital velocity (v₀)?</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-mcq-1-3">
+                        <div class="qa-inner">
+                    <ul class="options"><li class="opt ">a) vₑ = v₀</li><li class="opt correct">b) vₑ = √2 v₀</li><li class="opt ">c) vₑ = 2 v₀</li><li class="opt ">d) vₑ = v₀/√2</li></ul>
+                    <div class="ans-label">✅ Answer: <span>b) vₑ = √2 v₀</span></div>
+                    <p class="explain">Escape velocity = √(2GM/R) and orbital velocity = √(GM/R); therefore vₑ = √2 × v₀.</p>
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="mcq">
+                    <button class="qa-header" onclick="toggleQA('q-mcq-1-4')" aria-expanded="false">
+                        <span class="qa-num">5</span>
+                        <span class="qa-q">According to Kepler's third law, what is the relation between orbital period (T) and orbital radius (r)?</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-mcq-1-4">
+                        <div class="qa-inner">
+                    <ul class="options"><li class="opt ">a) T ∝ r</li><li class="opt correct">b) T² ∝ r³</li><li class="opt ">c) T³ ∝ r²</li><li class="opt ">d) T ∝ r²</li></ul>
+                    <div class="ans-label">✅ Answer: <span>b) T² ∝ r³</span></div>
+                    <p class="explain">According to Kepler's third law, T² ∝ r³ (the square of the orbital period is proportional to the cube of the orbital radius).</p>
+                </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        
+            <div class="section-block" data-type="pair">
+                <div class="section-title-bar"><span class="section-dot"></span>Identify the Wrong Pair</div>
+                <div class="section-qs">
+                <div class="qa-card" data-type="pair">
+                    <button class="qa-header" onclick="toggleQA('q-pair-1-0')" aria-expanded="false">
+                        <span class="qa-num">1</span>
+                        <span class="qa-q">Which of the following is the wrong pair? (1) Newton – Universal Gravitation (2) Kepler – Laws of Planetary Motion (3) Coulomb – Electric Force (4) Galileo – Gravitational constant G</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-pair-1-0">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Wrong Pair: <span>(4) Galileo – Gravitational constant G</span></div>
+                    <p class="explain">The value of gravitational constant G was measured by Cavendish through experiments; Galileo did early work in gravitation but did not measure G.</p>
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="pair">
+                    <button class="qa-header" onclick="toggleQA('q-pair-1-1')" aria-expanded="false">
+                        <span class="qa-num">2</span>
+                        <span class="qa-q">Which of the following is the wrong pair? (1) Orbital velocity – √(GM/R) (2) Escape velocity – √(2GM/R) (3) Gravitational acceleration – GM/R² (4) Centrifugal force – Gravitational force</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-pair-1-1">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Wrong Pair: <span>(4) Centrifugal force – Gravitational force</span></div>
+                    <p class="explain">Gravitational force provides the centripetal force for satellites; centrifugal force is a pseudo force arising from inertia, not gravitational force.</p>
+                </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        
+            <div class="section-block" data-type="note">
+                <div class="section-title-bar"><span class="section-dot"></span>Write a Note</div>
+                <div class="section-qs">
+                <div class="qa-card" data-type="note">
+                    <button class="qa-header" onclick="toggleQA('q-note-1-0')" aria-expanded="false">
+                        <span class="qa-num">1</span>
+                        <span class="qa-q">Gravitation</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-note-1-0">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer: <span>The attractive force acting between two objects in inverse proportion to the square of the distance and directly proportional to the product of their masses is called universal gravitation. F = G m₁m₂ / r².</span></div>
+                    
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="note">
+                    <button class="qa-header" onclick="toggleQA('q-note-1-1')" aria-expanded="false">
+                        <span class="qa-num">2</span>
+                        <span class="qa-q">Centripetal force</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-note-1-1">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer: <span>The force acting towards the center on an object moving in a circular orbit is called centripetal force. For a satellite, this force is provided by gravity.</span></div>
+                    
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="note">
+                    <button class="qa-header" onclick="toggleQA('q-note-1-2')" aria-expanded="false">
+                        <span class="qa-num">3</span>
+                        <span class="qa-q">Artificial satellite</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-note-1-2">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer: <span>A man-made machine revolving around Earth in a fixed orbit is called an artificial satellite. It is used for communication, weather forecasting, and observation.</span></div>
+                    
+                </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        
+            <div class="section-block" data-type="reason">
+                <div class="section-title-bar"><span class="section-dot"></span>Explain the Statements with Reasons</div>
+                <div class="section-qs">
+                <div class="qa-card" data-type="reason">
+                    <button class="qa-header" onclick="toggleQA('q-reason-1-0')" aria-expanded="false">
+                        <span class="qa-num">1</span>
+                        <span class="qa-q">An object thrown upward from Earth returns to Earth.</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-reason-1-0">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer:</div>
+                    <div class="answer-text">Earth exerts gravitational force on the object, reducing its upward velocity, and eventually it returns to Earth. If the throwing speed is less than escape velocity, the object returns.</div>
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="reason">
+                    <button class="qa-header" onclick="toggleQA('q-reason-1-1')" aria-expanded="false">
+                        <span class="qa-num">2</span>
+                        <span class="qa-q">The Moon revolves around Earth in a circular orbit.</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-reason-1-1">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer:</div>
+                    <div class="answer-text">Earth's gravitational force provides the necessary centripetal force to the Moon; therefore, the Moon moves in a stable orbit around Earth.</div>
+                </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        
+            <div class="section-block" data-type="fill">
+                <div class="section-title-bar"><span class="section-dot"></span>Fill in the Blanks</div>
+                <div class="section-qs">
+                <div class="qa-card" data-type="fill">
+                    <button class="qa-header" onclick="toggleQA('q-fill-1-0')" aria-expanded="false">
+                        <span class="qa-num">1</span>
+                        <span class="qa-q">The formula for gravitational force is ________.</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-fill-1-0">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer: <span>F = G m₁m₂ / r²</span></div>
+                    
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="fill">
+                    <button class="qa-header" onclick="toggleQA('q-fill-1-1')" aria-expanded="false">
+                        <span class="qa-num">2</span>
+                        <span class="qa-q">The value of gravitational acceleration on Earth is approximately ________.</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-fill-1-1">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer: <span>9.8 m/s²</span></div>
+                    
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="fill">
+                    <button class="qa-header" onclick="toggleQA('q-fill-1-2')" aria-expanded="false">
+                        <span class="qa-num">3</span>
+                        <span class="qa-q">The ratio of escape velocity to orbital velocity of a satellite is ________.</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-fill-1-2">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer: <span>√2</span></div>
+                    
+                </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        
+            <div class="section-block" data-type="long">
+                <div class="section-title-bar"><span class="section-dot"></span>Detailed Answers</div>
+                <div class="section-qs">
+                <div class="qa-card" data-type="long">
+                    <button class="qa-header" onclick="toggleQA('q-long-1-0')" aria-expanded="false">
+                        <span class="qa-num">1</span>
+                        <span class="qa-q">Explain Newton's universal law of gravitation in detail.</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-long-1-0">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer:</div>
+                    <div class="answer-text">According to Newton's universal law of gravitation, every object in the universe attracts every other object. This attractive force is directly proportional to the product of their masses and inversely proportional to the square of the distance between them: F = G m₁m₂/r². Here G is the universal gravitational constant (6.67×10⁻¹¹ Nm²/kg²). This theory explains the motion of planets, satellites, the Moon, and the Sun.</div>
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="long">
+                    <button class="qa-header" onclick="toggleQA('q-long-1-1')" aria-expanded="false">
+                        <span class="qa-num">2</span>
+                        <span class="qa-q">What is an artificial satellite? Explain its applications.</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-long-1-1">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer:</div>
+                    <div class="answer-text">An artificial satellite is a man-made machine that revolves around Earth in a fixed orbit. Applications: (1) Telecommunications – radio, TV, phone messages; (2) Weather forecasting and storm information; (3) Earth observation and mapping; (4) Defense and navigation (GPS).</div>
+                </div>
+                    </div>
+                </div>
+            
+                <div class="qa-card" data-type="long">
+                    <button class="qa-header" onclick="toggleQA('q-long-1-2')" aria-expanded="false">
+                        <span class="qa-num">3</span>
+                        <span class="qa-q">Explain the difference between orbital velocity and escape velocity.</span>
+                        <span class="qa-toggle">+</span>
+                    </button>
+                    <div class="qa-body" id="q-long-1-2">
+                        <div class="qa-inner">
+                    <div class="ans-label">✅ Answer:</div>
+                    <div class="answer-text">Orbital velocity (v₀ = √(GM/R)) is the minimum velocity required for a satellite to revolve around Earth in a circular orbit. Escape velocity (vₑ = √(2GM/R)) is the velocity required for an object to completely free itself from Earth's gravity and go into space. vₑ = √2 × v₀.</div>
+                </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        
+        </div>
+    </main>
+
+    <script>
+        
+function goBack() {
+    if (window.history.length > 1) { window.history.back(); }
+    else { window.location.href = './sciencechapters_en.html'; }
+}
+function toggleQA(id) {
+    var body = document.getElementById(id);
+    var card = body.parentElement;
+    if (body.style.maxHeight && body.style.maxHeight !== '0px') {
+        body.style.maxHeight = '0px';
+        card.classList.remove('open');
+    } else {
+        body.style.maxHeight = body.scrollHeight + 'px';
+        card.classList.add('open');
+    }
+}
+function filterQA(type, el) {
+    document.querySelectorAll('.pill').forEach(function(p){ p.classList.remove('active'); });
+    el.classList.add('active');
+    document.querySelectorAll('.section-block').forEach(function(sec){
+        if (type === 'all' || sec.getAttribute('data-type') === type) {
+            sec.classList.remove('hidden');
+        } else {
+            sec.classList.add('hidden');
+        }
+    });
+}
+window.onload = function(){
+    document.querySelectorAll('.qa-body').forEach(function(b){ b.style.maxHeight = '0px'; });
+};
+    </script>
+</body>
+</html>
