@@ -29,7 +29,7 @@
 
   /* ---------- 1. HARDCODED ACCESS CODE ----------
      Registration / login is blocked unless this exact code is supplied. */
-  const MASTER_ACCESS_CODE = "10thenglishfree1";
+  const MASTER_ACCESS_CODE = "rummandeshmukh";
 
   /* ---------- 2. STORAGE KEY CONVENTIONS ---------- */
   const USERS_KEY = "english10_users";     // map of name -> profile
